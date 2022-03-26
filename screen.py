@@ -61,16 +61,16 @@ async def traite_file(file: Path, n, cat):
         return
 
     cmd = (f"ffprobe -v error -show_entries format=duration "
-           f"-of default=noprint_wrappers=1:nokey=1 '{file}'")
+           f"-of default=noprint_wrappers=1:nokey=1 \"{file}\"")
     stdout = await run(cmd)
     duration = int(float(stdout))
 
     for _ in range(0, n):
         t = random.randrange(duration)
         output = f"{sys.argv[2]}/{cat}_{dico[cat]:04}.jpg"
-        cmd = f"ffmpeg -y -ss {t} -i '{file}' -frames:v 1 -q:v 2 '{output}'"
+        cmd = f"ffmpeg -y -ss {t} -i \"{file}\" -frames:v 1 -q:v 2 \"{output}\""
         await run(cmd)
-        cmd = f"magick convert -resize x512 '{output}' '{output}'"
+        cmd = f"magick convert -resize x512 \"{output}\" \"{output}\""
         await run(cmd)
         dico[cat] += 1
 
